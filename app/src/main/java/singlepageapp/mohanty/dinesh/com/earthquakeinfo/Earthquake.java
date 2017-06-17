@@ -8,13 +8,15 @@ public class Earthquake {
     private String place;
     Double magnitude;
     long date;
+    String link;
 
 
-    public Earthquake(Double magnitude ,String place , long date)
+    public Earthquake(Double magnitude ,String place , long date , String link)
     {
        this.place = place;
         this.date = date;
         this.magnitude = magnitude;
+        this.link = link;
 
     }
 
@@ -32,6 +34,11 @@ public class Earthquake {
     public Double getMagnitude()
     {
         return magnitude;
+    }
+
+    public String getLink()
+    {
+        return link;
     }
 
 

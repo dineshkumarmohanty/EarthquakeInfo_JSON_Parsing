@@ -1,9 +1,13 @@
 package singlepageapp.mohanty.dinesh.com.earthquakeinfo;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
@@ -19,6 +23,9 @@ import java.util.ArrayList;
 import javax.net.ssl.HttpsURLConnection;
 
 public class EarthQuakeActivity extends AppCompatActivity {
+    ListView listView;
+    ArrayList<Earthquake> Earthquakes;
+    EarthquakeAdapter earthquakeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +33,30 @@ public class EarthQuakeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_earth_quake);
 
 
+
+
         AsyncTask<String , Void , String> asyncTask = new EarthAsync();
         asyncTask.execute("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10");
+        listView = (ListView)findViewById(R.id.list_main);
 
+            if (listView != null) {
 
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                        if (Earthquakes != null) {
+
+                            Earthquake earthquake = earthquakeAdapter.getItem(position);
+                            Uri uri = Uri.parse(earthquake.getLink());
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            if (intent.resolveActivity(getPackageManager()) != null) {
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
+            }
 
 
     }
@@ -62,10 +88,10 @@ public class EarthQuakeActivity extends AppCompatActivity {
                 return;
             }
             else {
-                ArrayList<Earthquake> Earthquakes = QueryUtils.extractEarthquakes(jsonString);
-                ListView listView = (ListView)findViewById(R.id.list_main);
-                EarthquakeAdapter EarthquakeAdapter = new EarthquakeAdapter(EarthQuakeActivity.this ,Earthquakes);
-                listView.setAdapter(EarthquakeAdapter);
+                Earthquakes = QueryUtils.extractEarthquakes(jsonString);
+                earthquakeAdapter = new EarthquakeAdapter(EarthQuakeActivity.this, Earthquakes);
+                listView.setAdapter(earthquakeAdapter);
+
             }
         }
 

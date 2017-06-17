@@ -40,7 +40,8 @@ public final class QueryUtils {
                 Double magnitude = jsonObject1.getDouble("mag");
                 String place = jsonObject1.getString("place");
                 long date = jsonObject1.getLong("time");
-                earthquakes.add(new Earthquake(magnitude , place , date));
+                String link = jsonObject1.getString("url");
+                earthquakes.add(new Earthquake(magnitude , place , date , link));
             }
 
 
