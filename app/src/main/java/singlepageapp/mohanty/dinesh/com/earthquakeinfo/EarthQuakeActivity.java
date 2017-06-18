@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class EarthQuakeActivity extends AppCompatActivity implements LoaderManag
     ArrayList<Earthquake> Earthquakes;
     EarthquakeAdapter earthquakeAdapter;
     String Link = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
-
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,8 @@ public class EarthQuakeActivity extends AppCompatActivity implements LoaderManag
 
         LoaderManager loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(1 , null ,this);
+        textView = (TextView)findViewById(R.id.empty_view);
+        listView.setEmptyView(textView);
 
 
 
@@ -45,6 +48,8 @@ public class EarthQuakeActivity extends AppCompatActivity implements LoaderManag
 
         earthquakeAdapter = new EarthquakeAdapter(EarthQuakeActivity.this ,data);
         listView.setAdapter(earthquakeAdapter);
+
+        textView.setText("No Item present");
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -57,7 +62,7 @@ public class EarthQuakeActivity extends AppCompatActivity implements LoaderManag
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             startActivity(intent);
                         }
-                   
+
                 }
             });
 
