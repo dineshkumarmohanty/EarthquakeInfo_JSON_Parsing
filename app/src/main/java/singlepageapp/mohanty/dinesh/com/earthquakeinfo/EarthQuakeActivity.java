@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -50,6 +51,12 @@ public class EarthQuakeActivity extends AppCompatActivity implements LoaderManag
         listView.setAdapter(earthquakeAdapter);
 
         textView.setText("No Item present");
+
+
+        ProgressBar progressBar = (ProgressBar)findViewById(R.id.loading_indicator) ;
+        progressBar.setVisibility(View.GONE);
+
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
