@@ -1,6 +1,9 @@
 package singlepageapp.mohanty.dinesh.com.earthquakeinfo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -26,13 +29,25 @@ public class EarthQuakeActivity extends AppCompatActivity implements LoaderManag
         setContentView(R.layout.activity_earth_quake);
 
         listView = (ListView)findViewById(R.id.list_main);
-
-        LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.initLoader(1 , null ,this);
         textView = (TextView)findViewById(R.id.empty_view);
         listView.setEmptyView(textView);
 
 
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnected())
+        {
+            LoaderManager loaderManager = getSupportLoaderManager();
+            loaderManager.initLoader(1 , null ,this);
+
+        }
+        else {
+            View loadingIndicator = findViewById(R.id.loading_indicator);
+            loadingIndicator.setVisibility(View.GONE);
+            textView.setText("No Internet Connection");
+        }
 
 
 
